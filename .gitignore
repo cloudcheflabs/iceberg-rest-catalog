@@ -1,0 +1,17 @@
+.classpath
+.project
+.settings
+*/.settings
+*/.vertx
+target/
+*/target/**
+.idea
+*.iml
+*.lck
+*.log
+*.retry
+dist/
+*/dist/**
+node_modules/
+*/node_modules/**
+*/.terraform/**
