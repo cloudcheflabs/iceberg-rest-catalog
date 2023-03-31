@@ -29,7 +29,7 @@
 		<junit.version>4.12</junit.version>
 
 		<!-- hadoop version -->
-		<hadoop.version>3.3.4</hadoop.version>
+		<hadoop.version>3.2.2</hadoop.version>
 
 		<!-- spring -->
 		<spring.version>5.2.4.RELEASE</spring.version>
@@ -39,6 +39,9 @@
 
 		<!-- aws sdk -->
 		<aws-sdk.version>2.20.18</aws-sdk.version>
+
+		<!-- aws java sdk -->
+		<aws-java-sdk.version>1.11.563</aws-java-sdk.version>
 
 		<!-- http client -->
 		<http-client.version>5.2.1</http-client.version>
@@ -56,6 +59,30 @@
 		<sqlite-driver.version>3.41.0.0</sqlite-driver.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-aws</artifactId>
+			<version>${hadoop.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-databind</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-annotations</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
