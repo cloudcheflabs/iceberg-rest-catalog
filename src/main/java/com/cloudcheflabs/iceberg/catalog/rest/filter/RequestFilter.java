@@ -2,6 +2,7 @@ package com.cloudcheflabs.iceberg.catalog.rest.filter;
 
 
 
+import com.cloudcheflabs.iceberg.catalog.rest.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +20,18 @@ public class RequestFilter implements Filter {
   public static final String KEY_USER = "user";
   public static final String KEY_TOKEN = "token";
 
+  public static final String ENV_REST_CATALOG_ACCESS_TOKEN = "REST_CATALOG_ACCESS_TOKEN";
+
   private FilterConfig filterConfig = null;
+
+  private String accessToken;
 
   public void init(FilterConfig filterConfig) throws ServletException {
     this.filterConfig = filterConfig;
+    accessToken = StringUtils.getEnv(ENV_REST_CATALOG_ACCESS_TOKEN);
+    if(accessToken == null) {
+      throw new RuntimeException("Env. value of REST_CATALOG_ACCESS_TOKEN is null!");
+    }
   }
 
   @Override
@@ -46,8 +55,7 @@ public class RequestFilter implements Filter {
       String bearer = headerTokens[0];
       String token = headerTokens[1];
 
-      // TODO: validate token.
-      boolean isValid = token.equals("valid-token-12345");
+      boolean isValid = token.equals(accessToken);
       if(isValid) {
         HttpServletRequestWrapper requestWrapper = new HttpServletRequestWrapper(httpRequest);
         HttpServletResponseWrapper responseWrapper = new HttpServletResponseWrapper(httpResponse);
