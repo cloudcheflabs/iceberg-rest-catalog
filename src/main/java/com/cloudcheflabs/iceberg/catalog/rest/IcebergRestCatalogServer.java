@@ -2,12 +2,10 @@ package com.cloudcheflabs.iceberg.catalog.rest;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.cloudcheflabs.iceberg.catalog.rest.filter.RequestFilter;
 import com.google.common.collect.ImmutableMap;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.iceberg.CatalogProperties;
@@ -26,6 +24,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.DispatcherType;
+
 public class IcebergRestCatalogServer {
     private static final Logger LOG = LoggerFactory.getLogger(IcebergRestCatalogServer.class);
     private static final String CATALOG_ENV_PREFIX = "CATALOG_";
@@ -36,29 +36,12 @@ public class IcebergRestCatalogServer {
     public void run(){
         try {
             RESTCatalogAdapter adapter = new RESTCatalogAdapter(backendCatalog());
-            SessionCatalog.SessionContext sessionContext =
-                    new SessionCatalog.SessionContext(
-                            UUID.randomUUID().toString(),
-                            "user",
-                            ImmutableMap.of("credential", "user:secret"),
-                            ImmutableMap.of());
-
-            RESTCatalog catalog = new RESTCatalog(sessionContext, (config) -> adapter);
-            catalog.initialize(
-                    "prod",
-                    ImmutableMap.of(
-                            CatalogProperties.URI,
-                            "ignored",
-                            "credential",
-                            "catalog:secret",
-                            "token",
-                            "bearer-token"));
-
             RESTCatalogServlet servlet = new RESTCatalogServlet(adapter);
             ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
             context.setContextPath("/");
             ServletHolder servletHolder = new ServletHolder(servlet);
             servletHolder.setInitParameter("javax.ws.rs.Application", "ServiceListPublic");
+            context.addFilter(RequestFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
             context.addServlet(servletHolder, "/*");
             context.setVirtualHosts(null);
             context.setGzipHandler(new GzipHandler());
