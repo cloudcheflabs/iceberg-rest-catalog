@@ -23,14 +23,20 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.DispatcherType;
 
-public class IcebergRestCatalogServer {
+@Component
+public class IcebergRestCatalogServer implements InitializingBean {
     private static final Logger LOG = LoggerFactory.getLogger(IcebergRestCatalogServer.class);
     private static final String CATALOG_ENV_PREFIX = "CATALOG_";
 
-    public IcebergRestCatalogServer() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
+
+        run();
     }
 
     public void run(){
