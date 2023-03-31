@@ -1,0 +1,41 @@
+---
+#####################
+# profile: common
+#####################
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+    db:
+      enabled: false
+  server:
+    port: 38081
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  shutdown: graceful
+
+
+---
+#####################
+# profile: dev
+#####################
+spring:
+  profiles: dev
+
+
+---
+#####################
+# profile: prod
+#####################
+spring:
+  profiles: prod
