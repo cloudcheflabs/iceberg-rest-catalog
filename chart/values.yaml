@@ -1,0 +1,89 @@
+namespace: chango-data-api
+serviceAccount: chango-data-api
+image: cloudcheflabs/chango-data-api:v1.1.0
+imagePullPolicy: Always
+imagePullSecrets: {}
+replicas: 1
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: 2000m
+    memory: 5Gi
+priorityClassName: ""
+annotations: {}
+affinity: {}
+tolerations: {}
+nodeSelector: {}
+hostNetwork: false
+dnsPolicy: ClusterFirst
+nameOverride: ""
+
+
+# hpa.
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 50
+
+# ingress.
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hostName: chango-data-api-oci.cloudchef-labs.com
+
+# jetty ingress.
+jettyIngress:
+  enabled: true
+  ingressClassName: nginx
+  hostName: chango-data-api-jetty-oci.cloudchef-labs.com
+
+# chango admin.
+chango:
+  admin:
+    scheme: https
+    host: chango-admin-oci.cloudchef-labs.com
+    port: 443
+
+
+# cert-manager.
+certManager:
+  clusterIssue: letsencrypt-prod
+
+
+# spring boot server
+server:
+  port : 8097
+
+# embedded jetty server port.
+jetty:
+  server:
+    port: 18097
+
+
+# spring profile.
+spring:
+  profiles:
+    active: prod
+
+
+# spring boot management server.
+management:
+  server:
+    port: 38081
+
+# readiness probe.
+readiness:
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+# liveness probe.
+liveness:
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+
+# kafka bootstrap servers.
+bootstrapServers: kafka-0.kafka-headless.kafka.svc:9092,kafka-1.kafka-headless.kafka.svc:9092,kafka-2.kafka-headless.kafka.svc:9092

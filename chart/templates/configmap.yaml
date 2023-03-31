@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chango-data-api
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: chango-data-api
+    component: chango
+data:
+  application.yml: |
+    ---
+    #####################
+    # profile: common
+    #####################
+    
+    management:
+      endpoint:
+        health:
+          probes:
+            enabled: true
+      health:
+        livenessState:
+          enabled: true
+        readinessState:
+          enabled: true
+        db:
+          enabled: false
+      server:
+        port: {{ .Values.management.server.port }}
+    
+    server:
+      port: {{ .Values.server.port }}
+      servlet:
+        context-path: /
+      shutdown: graceful
+    
+    jetty:
+      server:
+        port: {{ .Values.jetty.server.port }}
+        threadPool:
+          maxThreads: 100
+          minThreads: 10
+          idleTimeout: 120      
+    
+    ---
+    #####################
+    # profile: dev
+    #####################
+    spring:
+      profiles: dev
+    
+    chango:
+      admin:
+        scheme: {{ .Values.chango.admin.scheme }}
+        host: {{ .Values.chango.admin.host }}
+        port: {{ .Values.chango.admin.port }}
+    
+    hive:
+      metastore:
+        url: localhost:9083
+    
+    kafka:
+      topic: event-log
+      producer: |-
+        bootstrap.servers={{ .Values.bootstrapServers }}
+        acks=0
+        retries=0
+        batch.size=16384
+        linger.ms=1
+        buffer.memory=33554432
+        key.serializer=org.apache.kafka.common.serialization.IntegerSerializer
+        value.serializer=io.confluent.kafka.serializers.KafkaAvroSerializer
+        compression.type=snappy
+        schema.registry.url=http://localhost:8081
+    
+    ---
+    #####################
+    # profile: prod
+    #####################
+    spring:
+      profiles: prod
+    
+    chango:
+      admin:
+        scheme: {{ .Values.chango.admin.scheme }}
+        host: {{ .Values.chango.admin.host }}
+        port: {{ .Values.chango.admin.port }}
+    
+    hive:
+      metastore:
+        url: metastore.hive-metastore.svc:9083
+    
+    kafka:
+      topic: event-log
+      producer: |-
+        bootstrap.servers={{ .Values.bootstrapServers }}
+        acks=0
+        retries=0
+        batch.size=16384
+        linger.ms=1
+        buffer.memory=33554432
+        key.serializer=org.apache.kafka.common.serialization.IntegerSerializer
+        value.serializer=io.confluent.kafka.serializers.KafkaAvroSerializer
+        compression.type=snappy
+        schema.registry.url=http://schema-registry.schema-registry.svc:8081
+

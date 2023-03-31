@@ -25,21 +25,123 @@
 
 		<!-- joda time -->
 		<joda-time.version>2.10.6</joda-time.version>
-
 		<!-- testing -->
 		<junit.version>4.12</junit.version>
+
+		<!-- hadoop version -->
+		<hadoop.version>3.3.4</hadoop.version>
 
 		<!-- spring -->
 		<spring.version>5.2.4.RELEASE</spring.version>
 
 		<!-- iceberg -->
 		<iceberg.version>1.2.0</iceberg.version>
-	</properties>
 
+		<!-- aws sdk -->
+		<aws-sdk.version>2.20.18</aws-sdk.version>
+
+		<!-- http client -->
+		<http-client.version>5.2.1</http-client.version>
+
+		<!-- http core -->
+		<http-core.version>5.1.4</http-core.version>
+
+		<!-- guava -->
+		<guava.verion>31.1-jre</guava.verion>
+
+		<!-- mysql driver -->
+		<mysql-connector-java.version>8.0.32</mysql-connector-java.version>
+	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.verion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents.client5</groupId>
+			<artifactId>httpclient5</artifactId>
+			<version>${http-client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents.core5</groupId>
+			<artifactId>httpcore5</artifactId>
+			<version>${http-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>url-connection-client</artifactId>
+			<version>${aws-sdk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>apache-client</artifactId>
+			<version>${aws-sdk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>${aws-sdk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>kms</artifactId>
+			<version>${aws-sdk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>glue</artifactId>
+			<version>${aws-sdk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>sts</artifactId>
+			<version>${aws-sdk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>dynamodb</artifactId>
+			<version>${aws-sdk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-hdfs-client</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.iceberg</groupId>
 			<artifactId>iceberg-core</artifactId>
+			<version>${iceberg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.iceberg</groupId>
+			<artifactId>iceberg-core</artifactId>
+			<version>${iceberg.version}</version>
+			<classifier>tests</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.iceberg</groupId>
+			<artifactId>iceberg-api</artifactId>
+			<version>${iceberg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.iceberg</groupId>
+			<artifactId>iceberg-aws</artifactId>
+			<version>${iceberg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.iceberg</groupId>
+			<artifactId>iceberg-bundled-guava</artifactId>
 			<version>${iceberg.version}</version>
 		</dependency>
 		<dependency>
