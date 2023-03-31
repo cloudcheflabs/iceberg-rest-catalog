@@ -29,6 +29,7 @@ public class RequestFilter implements Filter {
   public void init(FilterConfig filterConfig) throws ServletException {
     this.filterConfig = filterConfig;
     accessToken = StringUtils.getEnv(ENV_REST_CATALOG_ACCESS_TOKEN);
+    LOG.info("access token: {}", accessToken);
     if(accessToken == null) {
       throw new RuntimeException("Env. value of REST_CATALOG_ACCESS_TOKEN is null!");
     }
