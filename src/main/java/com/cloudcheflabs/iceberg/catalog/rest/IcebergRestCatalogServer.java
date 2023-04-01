@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.cloudcheflabs.iceberg.catalog.rest.filter.RequestFilter;
+import com.cloudcheflabs.iceberg.catalog.rest.util.StringUtils;
 import com.google.common.collect.ImmutableMap;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.iceberg.CatalogProperties;
@@ -17,6 +18,7 @@ import org.apache.iceberg.rest.RESTCatalog;
 import org.apache.iceberg.rest.RESTCatalogAdapter;
 import org.apache.iceberg.rest.RESTCatalogServlet;
 import org.apache.iceberg.util.PropertyUtil;
+import org.checkerframework.checker.units.qual.C;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -33,8 +35,24 @@ public class IcebergRestCatalogServer implements InitializingBean {
     private static final Logger LOG = LoggerFactory.getLogger(IcebergRestCatalogServer.class);
     private static final String CATALOG_ENV_PREFIX = "CATALOG_";
 
+    public static final String ENV_S3_ACCESS_KEY = "S3_ACCESS_KEY";
+    public static final String ENV_S3_SECRET_KEY = "S3_SECRET_KEY";
+    public static final String ENV_S3_ENDPOINT = "S3_ENDPOINT";
+
+    private String s3AccessKey;
+    private String s3SecretKey;
+    private String s3Endpoint;
+
     @Override
     public void afterPropertiesSet() throws Exception {
+        s3AccessKey = StringUtils.getEnv(ENV_S3_ACCESS_KEY);
+        LOG.info("s3AccessKey: {}", s3AccessKey);
+
+        s3SecretKey = StringUtils.getEnv(ENV_S3_SECRET_KEY);
+        LOG.info("s3SecretKey: {}", s3SecretKey);
+
+        s3Endpoint = StringUtils.getEnv(ENV_S3_ENDPOINT);
+        LOG.info("s3Endpoint: {}", s3Endpoint);
 
         run();
     }
@@ -65,7 +83,7 @@ public class IcebergRestCatalogServer implements InitializingBean {
         }
     }
 
-    private static Catalog backendCatalog() throws IOException {
+    private Catalog backendCatalog() throws IOException {
         // Translate environment variable to catalog properties
         Map<String, String> catalogProperties =
                 System.getenv().entrySet().stream()
@@ -99,6 +117,23 @@ public class IcebergRestCatalogServer implements InitializingBean {
 
         // Configure a default location if one is not specified
         String warehouseLocation = catalogProperties.get(CatalogProperties.WAREHOUSE_LOCATION);
+        Configuration configuration = new Configuration();
+        if(warehouseLocation.startsWith("s3a")) {
+            if(s3AccessKey == null) {
+                throw new RuntimeException("Env. value of S3_ACCESS_KEY for S3 access key is null!");
+            }
+            configuration.set("fs.s3a.access.key", s3AccessKey);
+
+            if(s3SecretKey == null) {
+                throw new RuntimeException("Env. value of S3_SECRET_KEY for S3 secret key is null!");
+            }
+            configuration.set("fs.s3a.secret.key", s3SecretKey);
+
+            if(s3Endpoint != null) {
+                configuration.set("fs.s3a.endpoint", s3Endpoint);
+            }
+            configuration.set("fs.s3a.path.style.access", "true");
+        }
 
         if (warehouseLocation == null) {
             File tmp = java.nio.file.Files.createTempDirectory("iceberg_warehouse").toFile();
@@ -110,6 +145,6 @@ public class IcebergRestCatalogServer implements InitializingBean {
         }
 
         LOG.info("Creating catalog with properties: {}", catalogProperties);
-        return CatalogUtil.buildIcebergCatalog("rest_backend", catalogProperties, new Configuration());
+        return CatalogUtil.buildIcebergCatalog("rest_backend", catalogProperties, configuration);
     }
 }
