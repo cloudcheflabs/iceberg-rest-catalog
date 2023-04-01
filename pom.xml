@@ -136,6 +136,11 @@
 			<version>${iceberg.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.iceberg</groupId>
+			<artifactId>iceberg-spark-runtime-3.2_${scala.binary.version}</artifactId>
+			<version>${iceberg.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>${sqlite-driver.version}</version>
