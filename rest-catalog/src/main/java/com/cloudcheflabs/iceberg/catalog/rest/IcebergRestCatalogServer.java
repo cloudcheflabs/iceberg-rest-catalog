@@ -131,10 +131,10 @@ public class IcebergRestCatalogServer implements InitializingBean {
 
         if(jdbcUser != null) {
             catalogProperties.put(
-                    JdbcCatalog.PROPERTY_PREFIX + "username", jdbcUser);
+                    JdbcCatalog.PROPERTY_PREFIX + "user", jdbcUser);
         } else {
             catalogProperties.putIfAbsent(
-                    JdbcCatalog.PROPERTY_PREFIX + "username", "user");
+                    JdbcCatalog.PROPERTY_PREFIX + "user", "user");
         }
 
         if(jdbcPassword != null) {
