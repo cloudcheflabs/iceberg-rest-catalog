@@ -24,11 +24,6 @@ public class RunSparkWithIcebergRestCatalog {
         String warehouse = System.getProperty("warehouse");
         String token = System.getProperty("token");
 
-        // set aws system properties.
-        System.setProperty("aws.region", "us-east-1");
-        System.setProperty("aws.accessKeyId", s3AccessKey);
-        System.setProperty("aws.secretAccessKey", s3SecretKey);
-
         SparkConf sparkConf = new SparkConf().setAppName("Run Spark with Iceberg REST Catalog");
         sparkConf.setMaster("local[2]");
 
@@ -57,19 +52,19 @@ public class RunSparkWithIcebergRestCatalog {
         hadoopConfiguration.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem");
         hadoopConfiguration.set("fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider");
 
-        // get table schema created by trino.
-        StructType schema = spark.table("rest.iceberg_db.test_iceberg").schema();
-
-        // read json.
-        String json = StringUtils.fileToString("data/test.json", true);
-        String lines[] = json.split("\\r?\\n");
-        Dataset<Row> df = spark.read().json(new JavaSparkContext(spark.sparkContext()).parallelize(Arrays.asList(lines)));
-
-        df.show(10);
-
-        // write to iceberg table.
-        Dataset<Row> newDf = spark.createDataFrame(df.javaRDD(), schema);
-        newDf.writeTo("rest.iceberg_db.test_iceberg").append();
+//        // get table schema created by trino.
+//        StructType schema = spark.table("rest.iceberg_db.test_iceberg").schema();
+//
+//        // read json.
+//        String json = StringUtils.fileToString("data/test.json", true);
+//        String lines[] = json.split("\\r?\\n");
+//        Dataset<Row> df = spark.read().json(new JavaSparkContext(spark.sparkContext()).parallelize(Arrays.asList(lines)));
+//
+//        df.show(10);
+//
+//        // write to iceberg table.
+//        Dataset<Row> newDf = spark.createDataFrame(df.javaRDD(), schema);
+//        newDf.writeTo("rest.iceberg_db.test_iceberg").append();
 
 
         // show data in table.

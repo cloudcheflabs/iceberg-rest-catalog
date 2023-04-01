@@ -1,24 +1,15 @@
 package com.cloudcheflabs.iceberg.catalog.rest;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import com.cloudcheflabs.iceberg.catalog.rest.filter.RequestFilter;
 import com.cloudcheflabs.iceberg.catalog.rest.util.StringUtils;
-import com.google.common.collect.ImmutableMap;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.iceberg.CatalogProperties;
 import org.apache.iceberg.CatalogUtil;
 import org.apache.iceberg.catalog.Catalog;
-import org.apache.iceberg.catalog.SessionCatalog;
 import org.apache.iceberg.jdbc.JdbcCatalog;
-import org.apache.iceberg.rest.RESTCatalog;
 import org.apache.iceberg.rest.RESTCatalogAdapter;
 import org.apache.iceberg.rest.RESTCatalogServlet;
 import org.apache.iceberg.util.PropertyUtil;
-import org.checkerframework.checker.units.qual.C;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -29,6 +20,13 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.DispatcherType;
+import java.io.File;
+import java.io.IOException;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class IcebergRestCatalogServer implements InitializingBean {
