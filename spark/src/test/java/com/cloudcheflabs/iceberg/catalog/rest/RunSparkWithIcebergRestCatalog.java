@@ -27,6 +27,11 @@ public class RunSparkWithIcebergRestCatalog {
         SparkConf sparkConf = new SparkConf().setAppName("Run Spark with Iceberg REST Catalog");
         sparkConf.setMaster("local[2]");
 
+        // set aws system properties.
+        System.setProperty("aws.region", "us-east-1");
+        System.setProperty("aws.accessKeyId", s3AccessKey);
+        System.setProperty("aws.secretAccessKey", s3SecretKey);
+
         // iceberg catalog from hive metastore.
         sparkConf.set("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions");
         sparkConf.set("spark.sql.catalog.rest", "org.apache.iceberg.spark.SparkCatalog");
@@ -35,6 +40,8 @@ public class RunSparkWithIcebergRestCatalog {
         sparkConf.set("spark.sql.catalog.rest.uri", restUrl);
         sparkConf.set("spark.sql.catalog.rest.warehouse", warehouse);
         sparkConf.set("spark.sql.catalog.rest.token", token);
+        sparkConf.set("spark.sql.catalog.rest.s3.endpoint", s3Endpoint);
+        sparkConf.set("spark.sql.catalog.rest.s3.path-style-access", "true");
         sparkConf.set("spark.sql.defaultCatalog", "rest");
 
         SparkSession spark = SparkSession
@@ -52,22 +59,29 @@ public class RunSparkWithIcebergRestCatalog {
         hadoopConfiguration.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem");
         hadoopConfiguration.set("fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider");
 
-//        // get table schema created by trino.
-//        StructType schema = spark.table("rest.iceberg_db.test_iceberg").schema();
-//
-//        // read json.
-//        String json = StringUtils.fileToString("data/test.json", true);
-//        String lines[] = json.split("\\r?\\n");
-//        Dataset<Row> df = spark.read().json(new JavaSparkContext(spark.sparkContext()).parallelize(Arrays.asList(lines)));
-//
-//        df.show(10);
-//
-//        // write to iceberg table.
-//        Dataset<Row> newDf = spark.createDataFrame(df.javaRDD(), schema);
-//        newDf.writeTo("rest.iceberg_db.test_iceberg").append();
+        // get table schema created by trino.
+        StructType schema = spark.table("rest.iceberg_db.test_iceberg").schema();
+
+        // read json.
+        String json = StringUtils.fileToString("data/test.json", true);
+        String lines[] = json.split("\\r?\\n");
+        Dataset<Row> df = spark.read().json(new JavaSparkContext(spark.sparkContext()).parallelize(Arrays.asList(lines)));
+
+        df.show(10);
+
+        // write to iceberg table.
+        Dataset<Row> newDf = spark.createDataFrame(df.javaRDD(), schema);
+        newDf.writeTo("rest.iceberg_db.test_iceberg").append();
+
+        // show data in table.
+        spark.table("rest.iceberg_db.test_iceberg").show(30);
 
 
         // show data in table.
-        spark.table("rest.rest_db.ctas_again13").show(20);
+        spark.table("rest.rest_db.ctas_again13").show(30);
+
+
+        // show data in table.
+        spark.table("rest.rest_db.excel").show(30);
     }
 }
