@@ -33,7 +33,7 @@ public class RunSparkWithIcebergRestCatalog {
         System.setProperty("aws.accessKeyId", s3AccessKey);
         System.setProperty("aws.secretAccessKey", s3SecretKey);
 
-        // iceberg catalog from hive metastore.
+        // iceberg rest catalog.
         sparkConf.set("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions");
         sparkConf.set("spark.sql.catalog.rest", "org.apache.iceberg.spark.SparkCatalog");
         sparkConf.set("spark.sql.catalog.rest.catalog-impl", "org.apache.iceberg.rest.RESTCatalog");
