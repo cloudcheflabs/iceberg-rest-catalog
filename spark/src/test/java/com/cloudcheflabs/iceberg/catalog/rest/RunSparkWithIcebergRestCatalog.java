@@ -51,14 +51,6 @@ public class RunSparkWithIcebergRestCatalog {
                 .enableHiveSupport()
                 .getOrCreate();
 
-
-        // create schema.
-        spark.sql("CREATE SCHEMA IF NOT EXISTS rest.iceberg_db ");
-
-        // create table.
-        String createTableSql = FileUtils.fileToString("create-table.sql", true);
-        spark.sql(createTableSql);
-
         Configuration hadoopConfiguration = spark.sparkContext().hadoopConfiguration();
         hadoopConfiguration.set("fs.s3a.endpoint", s3Endpoint);
         hadoopConfiguration.set("fs.s3a.access.key", s3AccessKey);
@@ -74,7 +66,14 @@ public class RunSparkWithIcebergRestCatalog {
 
         df.show(10);
 
-        // get table schema created by trino.
+        // create schema.
+        spark.sql("CREATE SCHEMA IF NOT EXISTS rest.iceberg_db ");
+
+        // create table.
+        String createTableSql = FileUtils.fileToString("create-table.sql", true);
+        spark.sql(createTableSql);
+
+        // get table schema created.
         StructType schema = spark.table("rest.iceberg_db.test_iceberg").schema();
 
         // write to iceberg table.
