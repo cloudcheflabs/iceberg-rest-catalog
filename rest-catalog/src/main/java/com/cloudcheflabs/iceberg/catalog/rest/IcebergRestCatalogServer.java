@@ -37,9 +37,17 @@ public class IcebergRestCatalogServer implements InitializingBean {
     public static final String ENV_S3_SECRET_KEY = "S3_SECRET_KEY";
     public static final String ENV_S3_ENDPOINT = "S3_ENDPOINT";
 
+    public static final String ENV_JDBC_URL = "JDBC_URL";
+    public static final String ENV_JDBC_USER = "JDBC_USER";
+    public static final String ENV_JDBC_PASSWORD = "JDBC_PASSWORD";
+
     private String s3AccessKey;
     private String s3SecretKey;
     private String s3Endpoint;
+
+    private String jdbcUrl;
+    private String jdbcUser;
+    private String jdbcPassword;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -51,6 +59,15 @@ public class IcebergRestCatalogServer implements InitializingBean {
 
         s3Endpoint = StringUtils.getEnv(ENV_S3_ENDPOINT);
         LOG.info("s3Endpoint: {}", s3Endpoint);
+
+        jdbcUrl = StringUtils.getEnv(ENV_JDBC_URL);
+        LOG.info("jdbcUrl: {}", jdbcUrl);
+
+        jdbcUser = StringUtils.getEnv(ENV_JDBC_USER);
+        LOG.info("jdbcUser: {}", jdbcUser);
+
+        jdbcPassword = StringUtils.getEnv(ENV_JDBC_PASSWORD);
+        LOG.info("jdbcPassword: {}", jdbcPassword);
 
         run();
     }
@@ -104,14 +121,29 @@ public class IcebergRestCatalogServer implements InitializingBean {
         catalogProperties.putIfAbsent(
                 CatalogProperties.CATALOG_IMPL, "org.apache.iceberg.jdbc.JdbcCatalog");
 
-        catalogProperties.putIfAbsent(
-                CatalogProperties.URI, "jdbc:sqlite:file:/tmp/iceberg_rest_mode=memory");
+        if(jdbcUrl != null) {
+            catalogProperties.put(
+                    CatalogProperties.URI, jdbcUrl);
+        } else {
+            catalogProperties.putIfAbsent(
+                    CatalogProperties.URI, "jdbc:sqlite:file:/tmp/iceberg_rest_mode=memory");
+        }
 
-        catalogProperties.putIfAbsent(
-                JdbcCatalog.PROPERTY_PREFIX + "username", "user");
+        if(jdbcUser != null) {
+            catalogProperties.put(
+                    JdbcCatalog.PROPERTY_PREFIX + "username", jdbcUser);
+        } else {
+            catalogProperties.putIfAbsent(
+                    JdbcCatalog.PROPERTY_PREFIX + "username", "user");
+        }
 
-        catalogProperties.putIfAbsent(
-                JdbcCatalog.PROPERTY_PREFIX + "password", "password");
+        if(jdbcPassword != null) {
+            catalogProperties.put(
+                    JdbcCatalog.PROPERTY_PREFIX + "password", jdbcPassword);
+        } else {
+            catalogProperties.putIfAbsent(
+                    JdbcCatalog.PROPERTY_PREFIX + "password", "password");
+        }
 
         // Configure a default location if one is not specified
         String warehouseLocation = catalogProperties.get(CatalogProperties.WAREHOUSE_LOCATION);
