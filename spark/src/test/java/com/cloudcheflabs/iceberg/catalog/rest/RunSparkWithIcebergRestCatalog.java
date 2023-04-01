@@ -1,5 +1,6 @@
 package com.cloudcheflabs.iceberg.catalog.rest;
 
+import com.cloudcheflabs.iceberg.catalog.rest.util.FileUtils;
 import com.cloudcheflabs.iceberg.catalog.rest.util.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.spark.SparkConf;
@@ -51,6 +52,13 @@ public class RunSparkWithIcebergRestCatalog {
                 .getOrCreate();
 
 
+        // create schema.
+        spark.sql("CREATE SCHEMA IF NOT EXISTS rest.iceberg_db ");
+
+        // create table.
+        String createTableSql = FileUtils.fileToString("create-table.sql", true);
+        spark.sql(createTableSql);
+
         Configuration hadoopConfiguration = spark.sparkContext().hadoopConfiguration();
         hadoopConfiguration.set("fs.s3a.endpoint", s3Endpoint);
         hadoopConfiguration.set("fs.s3a.access.key", s3AccessKey);
@@ -59,9 +67,6 @@ public class RunSparkWithIcebergRestCatalog {
         hadoopConfiguration.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem");
         hadoopConfiguration.set("fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider");
 
-        // get table schema created by trino.
-        StructType schema = spark.table("rest.iceberg_db.test_iceberg").schema();
-
         // read json.
         String json = StringUtils.fileToString("data/test.json", true);
         String lines[] = json.split("\\r?\\n");
@@ -69,19 +74,14 @@ public class RunSparkWithIcebergRestCatalog {
 
         df.show(10);
 
+        // get table schema created by trino.
+        StructType schema = spark.table("rest.iceberg_db.test_iceberg").schema();
+
         // write to iceberg table.
         Dataset<Row> newDf = spark.createDataFrame(df.javaRDD(), schema);
         newDf.writeTo("rest.iceberg_db.test_iceberg").append();
 
         // show data in table.
         spark.table("rest.iceberg_db.test_iceberg").show(30);
-
-
-        // show data in table.
-        spark.table("rest.rest_db.ctas_again13").show(30);
-
-
-        // show data in table.
-        spark.table("rest.rest_db.excel").show(30);
     }
 }
