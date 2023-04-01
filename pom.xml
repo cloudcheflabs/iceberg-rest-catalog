@@ -60,30 +60,6 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-aws</artifactId>
-			<version>${hadoop.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>jackson-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>jackson-databind</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>jackson-annotations</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-s3</artifactId>
-			<version>${aws-java-sdk.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
@@ -125,6 +101,32 @@
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.iceberg</groupId>
+			<artifactId>iceberg-core</artifactId>
+			<version>${iceberg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.iceberg</groupId>
+			<artifactId>iceberg-core</artifactId>
+			<version>${iceberg.version}</version>
+			<classifier>tests</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.iceberg</groupId>
+			<artifactId>iceberg-api</artifactId>
+			<version>${iceberg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.iceberg</groupId>
+			<artifactId>iceberg-aws</artifactId>
+			<version>${iceberg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.iceberg</groupId>
+			<artifactId>iceberg-bundled-guava</artifactId>
+			<version>${iceberg.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.xerial</groupId>
@@ -197,30 +199,28 @@
 			<version>${hadoop.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.iceberg</groupId>
-			<artifactId>iceberg-core</artifactId>
-			<version>${iceberg.version}</version>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-aws</artifactId>
+			<version>${hadoop.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-databind</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-annotations</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.iceberg</groupId>
-			<artifactId>iceberg-core</artifactId>
-			<version>${iceberg.version}</version>
-			<classifier>tests</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.iceberg</groupId>
-			<artifactId>iceberg-api</artifactId>
-			<version>${iceberg.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.iceberg</groupId>
-			<artifactId>iceberg-aws</artifactId>
-			<version>${iceberg.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.iceberg</groupId>
-			<artifactId>iceberg-bundled-guava</artifactId>
-			<version>${iceberg.version}</version>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
