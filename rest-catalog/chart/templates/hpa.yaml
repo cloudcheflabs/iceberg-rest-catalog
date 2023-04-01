@@ -2,7 +2,7 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: chango-data-api
+  name: rest-catalog
   namespace: {{ .Values.namespace }}
 spec:
   minReplicas: {{ .Values.hpa.minReplicas }}
@@ -10,6 +10,6 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: chango-data-api
+    name: rest-catalog
   targetCPUUtilizationPercentage: {{ .Values.hpa.targetCPUUtilizationPercentage }}
 {{- end }}

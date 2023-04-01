@@ -1,6 +1,6 @@
-namespace: chango-data-api
-serviceAccount: chango-data-api
-image: cloudcheflabs/chango-data-api:v1.1.0
+namespace: rest-catalog
+serviceAccount: rest-catalog
+image: cloudcheflabs/rest-catalog:v1.1.0
 imagePullPolicy: Always
 imagePullSecrets: {}
 replicas: 1
@@ -28,24 +28,26 @@ hpa:
   maxReplicas: 20
   targetCPUUtilizationPercentage: 50
 
-# ingress.
-ingress:
-  enabled: true
-  ingressClassName: nginx
-  hostName: chango-data-api-oci.cloudchef-labs.com
-
 # jetty ingress.
 jettyIngress:
-  enabled: true
+  enabled: false
   ingressClassName: nginx
-  hostName: chango-data-api-jetty-oci.cloudchef-labs.com
+  hostName: rest-catalog-jetty-oci.cloudchef-labs.com
 
-# chango admin.
-chango:
-  admin:
-    scheme: https
-    host: chango-admin-oci.cloudchef-labs.com
-    port: 443
+
+# iceberg rest catalog server environment variable values.
+restCatalog:
+  token: "any-rest-catalog-token-12345"
+  warehouse: "any-warehouse-location"
+  s3:
+    accessKey: "any-s3-access-key"
+    secretKey: "any-s3-secret-key"
+    endpoint: "any-s3-endpoint"
+  jdbc:
+    url: "jdbc:mysql://localhost:3306/rest_catalog?useSSL=false&createDatabaseIfNotExist=true"
+    user: "any-user"
+    password: "any-password"
+
 
 
 # cert-manager.
@@ -55,12 +57,12 @@ certManager:
 
 # spring boot server
 server:
-  port : 8097
+  port : 8080
 
 # embedded jetty server port.
 jetty:
   server:
-    port: 18097
+    port: 8181
 
 
 # spring profile.
@@ -83,7 +85,3 @@ readiness:
 liveness:
   initialDelaySeconds: 5
   periodSeconds: 5
-
-
-# kafka bootstrap servers.
-bootstrapServers: kafka-0.kafka-headless.kafka.svc:9092,kafka-1.kafka-headless.kafka.svc:9092,kafka-2.kafka-headless.kafka.svc:9092

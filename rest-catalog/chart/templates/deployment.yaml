@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: chango-data-api
+  name: rest-catalog
   labels:
-    app: chango-data-api
+    app: rest-catalog
     component: chango
   namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: chango-data-api
+      app: rest-catalog
       component: chango
   template:
     metadata:
       labels:
-        app: chango-data-api
+        app: rest-catalog
         component: chango
       {{- with .Values.annotations }}
       annotations:
@@ -45,24 +45,37 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount }}
       dnsPolicy: {{ .Values.dnsPolicy }}
       containers:
-        - name: chango-data-api
+        - name: rest-catalog
           image: {{ .Values.image }}
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "{{ .Values.spring.profiles.active }}"
+            - name: REST_CATALOG_ACCESS_TOKEN
+              value: "{{ .Values.restCatalog.token }}"
+            - name: CATALOG_WAREHOUSE
+              value: "{{ .Values.restCatalog.warehouse }}"
+            - name: S3_ACCESS_KEY
+              value: "{{ .Values.restCatalog.s3.accessKey }}"
+            - name: S3_SECRET_KEY
+              value: "{{ .Values.restCatalog.s3.secretKey }}"
+            - name: S3_ENDPOINT
+              value: "{{ .Values.restCatalog.s3.endpoint }}"
+            - name: JDBC_URL
+              value: "{{ .Values.restCatalog.jdbc.url }}"
+            - name: JDBC_USER
+              value: "{{ .Values.restCatalog.jdbc.user }}"
+            - name: JDBC_PASSWORD
+              value: "{{ .Values.restCatalog.jdbc.password }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           resources: 
           {{- toYaml $.Values.resources | nindent 12 }}
           command:
             - "./run-rest-catalog.sh"
           volumeMounts:
-            - name: chango-data-api-volume
-              mountPath: /opt/chango-data-api/conf/application.yml
+            - name: rest-catalog-volume
+              mountPath: /opt/rest-catalog/conf/application.yml
               subPath: application.yml
           ports:
-            - name: rest
-              containerPort: {{ .Values.server.port }}
-              protocol: TCP
             - name: jetty
               containerPort: {{ .Values.jetty.server.port }}
               protocol: TCP
@@ -83,6 +96,6 @@ spec:
               exec:
                 command: [ "sleep", "15" ]
       volumes:
-        - name: chango-data-api-volume
+        - name: rest-catalog-volume
           configMap:
-            name: chango-data-api
+            name: rest-catalog

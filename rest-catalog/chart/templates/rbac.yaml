@@ -4,7 +4,7 @@ kind: ServiceAccount
 metadata:
   name: {{ .Values.serviceAccount }}
   labels:
-    app.kubernetes.io/name: chango-data-api
+    app.kubernetes.io/name: rest-catalog
   namespace: {{ .Values.namespace }}
 
 ---
@@ -15,7 +15,7 @@ metadata:
     rbac.authorization.kubernetes.io/autoupdate: "true"
   labels:
     kubernetes.io/bootstrapping: rbac-defaults
-  name: {{ printf "chango-data-api%s" .Values.nameOverride }}
+  name: {{ printf "rest-catalog%s" .Values.nameOverride }}
 rules:
   - apiGroups:
       - '*'
@@ -37,11 +37,11 @@ metadata:
     rbac.authorization.kubernetes.io/autoupdate: "true"
   labels:
     kubernetes.io/bootstrapping: rbac-defaults
-  name: {{ printf "chango-data-api%s" .Values.nameOverride }}
+  name: {{ printf "rest-catalog%s" .Values.nameOverride }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ printf "chango-data-api%s" .Values.nameOverride }}
+  name: {{ printf "rest-catalog%s" .Values.nameOverride }}
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceAccount }}

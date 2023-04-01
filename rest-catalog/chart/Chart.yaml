@@ -1,7 +1,7 @@
 
 apiVersion: v2
-name: chango-data-api
-version: v1.4.0
-appVersion: v1.1.0
-description: chango data api
+name: iceberg-rest-catalog
+version: v1.0.0
+appVersion: v1.0.0
+description: Iceberg REST Catalog Server
 

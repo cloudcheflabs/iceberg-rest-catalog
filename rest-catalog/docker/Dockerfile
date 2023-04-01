@@ -16,29 +16,29 @@ RUN set -eux; \
     yum install java-11-openjdk java-11-openjdk-devel -y;
 
 
-# install chango data api.
-ENV CHANGO_DATA_API_HOME /opt/chango-data-api
-ENV CHANGO_DATA_API_USER chango
+# install rest catalog.
+ENV REST_CATALOG_HOME /opt/rest-catalog
+ENV REST_CATALOG_USER rest
 
-RUN useradd -ms /bin/bash -d ${CHANGO_DATA_API_HOME} ${CHANGO_DATA_API_USER}
+RUN useradd -ms /bin/bash -d ${REST_CATALOG_HOME} ${REST_CATALOG_USER}
 
 
-# add chango data-api jar.
-ARG CHANGO_DATA_API_JAR
-ADD ${CHANGO_DATA_API_JAR} ${CHANGO_DATA_API_HOME}/
+# add rest catalog jar.
+ARG REST_CATALOG_JAR
+ADD ${REST_CATALOG_JAR} ${REST_CATALOG_HOME}/
 
 
 # make conf directory.
-RUN mkdir -p ${CHANGO_DATA_API_HOME}/conf
+RUN mkdir -p ${REST_CATALOG_HOME}/conf
 
-# add chango run shell.
-ADD run-chango-data-api.sh ${CHANGO_DATA_API_HOME}/
+# add rest catalog run shell.
+ADD run-rest-catalog.sh ${REST_CATALOG_HOME}/
 
 
 # add permissions.
-RUN chmod +x ${CHANGO_DATA_API_HOME}/*.sh
-RUN chown ${CHANGO_DATA_API_USER}: -R ${CHANGO_DATA_API_HOME}
+RUN chmod +x ${REST_CATALOG_HOME}/*.sh
+RUN chown ${REST_CATALOG_USER}: -R ${REST_CATALOG_HOME}
 
 # change work directory.
-USER ${CHANGO_DATA_API_USER}
-WORKDIR ${CHANGO_DATA_API_HOME}
+USER ${REST_CATALOG_USER}
+WORKDIR ${REST_CATALOG_HOME}
