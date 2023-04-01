@@ -32,7 +32,7 @@ hpa:
 jettyIngress:
   enabled: false
   ingressClassName: nginx
-  hostName: rest-catalog-jetty-oci.cloudchef-labs.com
+  hostName: rest-catalog-jetty-test.cloudchef-labs.com
 
 
 # iceberg rest catalog server environment variable values.
