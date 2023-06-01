@@ -10,7 +10,7 @@
         </layout>
     </appender>
 
-    <root level="info">
+    <root level="log">
         <appender-ref ref="Console" />
     </root>
 </configuration>
