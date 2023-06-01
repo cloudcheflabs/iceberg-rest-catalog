@@ -8,6 +8,8 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.StringType;
 import org.apache.spark.sql.types.StructType;
 import org.junit.Test;
 
@@ -67,14 +69,10 @@ public class RunSparkWithIcebergRestCatalog {
         df.show(10);
 
         // create schema.
-        spark.sql("CREATE DATABASE IF NOT EXISTS rest.iceberg_db ");
+        spark.sql("CREATE SCHEMA IF NOT EXISTS rest.iceberg_db ");
 
-        // create table.
-        String createTableSql = FileUtils.fileToString("create-table.sql", true);
-        spark.sql(createTableSql);
-
-        // get table schema created.
-        StructType schema = spark.table("rest.iceberg_db.test_iceberg").schema();
+        // table schema.
+        StructType schema = createSchema();
 
         // write to iceberg table.
         Dataset<Row> newDf = spark.createDataFrame(df.javaRDD(), schema);
@@ -82,5 +80,19 @@ public class RunSparkWithIcebergRestCatalog {
 
         // show data in table.
         spark.table("rest.iceberg_db.test_iceberg").show(30);
+    }
+
+    private StructType createSchema() {
+        StructType schema = new StructType()
+                .add("baseproperties", new StructType()
+                    .add("eventtype", DataTypes.StringType)
+                    .add("ts", DataTypes.LongType)
+                    .add("uid", DataTypes.StringType)
+                    .add("version", DataTypes.StringType))
+                .add("itemid", DataTypes.StringType)
+                .add("price", DataTypes.LongType)
+                .add("quantity", DataTypes.LongType);
+
+        return schema;
     }
 }
