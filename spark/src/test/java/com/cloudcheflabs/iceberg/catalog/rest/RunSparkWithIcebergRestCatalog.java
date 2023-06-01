@@ -70,21 +70,8 @@ public class RunSparkWithIcebergRestCatalog {
         spark.sql("CREATE SCHEMA IF NOT EXISTS rest.iceberg_db ");
 
         // create table.
-        String createTableSql =
-                "CREATE TABLE IF NOT EXISTS rest.iceberg_db.test_iceberg (\n" +
-                        "    baseproperties STRUCT<eventtype: string,\n" +
-                        "                       ts: long,\n" +
-                        "                       uid: string,\n" +
-                        "                       version: string>,\n" +
-                        "    itemid string,\n" +
-                        "    price long,\n" +
-                        "    quantity long\n" +
-                        ")\n" +
-                        "USING iceberg\n" +
-                        "PARTITIONED BY (itemid)";
+        String createTableSql = FileUtils.fileToString("create-table.sql", true);
         spark.sql(createTableSql);
-
-        System.out.println("table created...");
 
         // get table schema created.
         StructType schema = spark.table("rest.iceberg_db.test_iceberg").schema();
