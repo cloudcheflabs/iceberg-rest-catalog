@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS rest.iceberg_db.test_iceberg (
+CREATE TABLE rest.iceberg_db.test_iceberg (
     baseproperties STRUCT<eventtype: string,
                        ts: bigint,
                        uid: string,
