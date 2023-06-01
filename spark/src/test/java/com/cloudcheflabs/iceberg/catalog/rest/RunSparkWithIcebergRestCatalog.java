@@ -73,6 +73,10 @@ public class RunSparkWithIcebergRestCatalog {
         String createTableSql = FileUtils.fileToString("create-table.sql", true);
         spark.sql(createTableSql);
 
+        spark.catalog().listDatabases();
+
+        spark.catalog().listTables();
+
         // get table schema created.
         StructType schema = spark.table("rest.iceberg_db.test_iceberg").schema();
 

@@ -1,11 +1,11 @@
-CREATE TABLE rest.iceberg_db.test_iceberg (
+CREATE TABLE IF NOT EXISTS rest.iceberg_db.test_iceberg (
     baseproperties STRUCT<eventtype: string,
-                       ts: bigint,
+                       ts: long,
                        uid: string,
                        version: string>,
     itemid string,
-    price bigint,
-    quantity bigint
+    price long,
+    quantity long
 )
 USING iceberg
 PARTITIONED BY (itemid)
