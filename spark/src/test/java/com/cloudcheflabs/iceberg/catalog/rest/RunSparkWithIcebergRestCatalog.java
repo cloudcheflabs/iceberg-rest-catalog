@@ -67,7 +67,7 @@ public class RunSparkWithIcebergRestCatalog {
         df.show(10);
 
         // create schema.
-        spark.sql("CREATE SCHEMA IF NOT EXISTS rest.iceberg_db ");
+        spark.sql("CREATE DATABASE IF NOT EXISTS rest.iceberg_db ");
 
         // create table.
         String createTableSql = FileUtils.fileToString("create-table.sql", true);

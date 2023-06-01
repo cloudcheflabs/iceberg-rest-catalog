@@ -7,5 +7,5 @@ CREATE TABLE IF NOT EXISTS rest.iceberg_db.test_iceberg (
     price long,
     quantity long
 )
-USING Iceberg
+USING iceberg
 PARTITIONED BY (itemid)
