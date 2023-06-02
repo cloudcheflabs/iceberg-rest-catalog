@@ -29,7 +29,7 @@
 		<spark.version>3.4.0</spark.version>
 
 		<!-- hadoop version -->
-		<hadoop.version>3.4.4</hadoop.version>
+		<hadoop.version>3.3.4</hadoop.version>
 
 		<!-- aws sdk -->
 		<aws-sdk.version>2.20.18</aws-sdk.version>
