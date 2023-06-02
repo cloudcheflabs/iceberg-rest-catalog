@@ -30,19 +30,19 @@
 		<junit.version>4.12</junit.version>
 
 		<!-- hadoop version -->
-		<hadoop.version>3.2.2</hadoop.version>
+		<hadoop.version>3.3.4</hadoop.version>
 
 		<!-- spring -->
 		<spring.version>5.2.4.RELEASE</spring.version>
 
 		<!-- iceberg -->
-		<iceberg.version>1.2.0</iceberg.version>
+		<iceberg.version>1.3.0</iceberg.version>
 
 		<!-- aws sdk -->
 		<aws-sdk.version>2.20.18</aws-sdk.version>
 
 		<!-- aws java sdk -->
-		<aws-java-sdk.version>1.11.563</aws-java-sdk.version>
+		<aws-java-sdk.version>1.12.316</aws-java-sdk.version>
 
 		<!-- http client -->
 		<http-client.version>5.2.1</http-client.version>
