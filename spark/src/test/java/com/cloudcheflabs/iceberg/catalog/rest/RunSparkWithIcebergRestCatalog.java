@@ -30,7 +30,7 @@ public class RunSparkWithIcebergRestCatalog {
         sparkConf.setMaster("local[2]");
 
         // set aws system properties.
-        System.setProperty("aws.region", "us-east-1");
+        System.setProperty("aws.region", (s3Region != null) ? s3Region : "us-east-1");
         System.setProperty("aws.accessKeyId", s3AccessKey);
         System.setProperty("aws.secretAccessKey", s3SecretKey);
 
