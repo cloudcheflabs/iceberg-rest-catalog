@@ -3,8 +3,8 @@
 
 set -e -x
 
-export REST_CATALOG_JAR=rest-catalog-1.0.0-SNAPSHOT.jar;
-export DATA_API_IMAGE=cloudcheflabs/rest-catalog:v1.0.0
+export REST_CATALOG_JAR=rest-catalog-1.1.0.jar;
+export DATA_API_IMAGE=cloudcheflabs/rest-catalog:v1.1.0
 
 
 for i in "$@"
