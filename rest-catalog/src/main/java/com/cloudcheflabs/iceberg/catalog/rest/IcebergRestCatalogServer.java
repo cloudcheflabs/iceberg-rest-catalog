@@ -64,9 +64,6 @@ public class IcebergRestCatalogServer implements InitializingBean {
         s3Endpoint = StringUtils.getEnv(ENV_S3_ENDPOINT);
         LOG.info("s3Endpoint: {}", s3Endpoint);
 
-        s3Endpoint = StringUtils.getEnv(ENV_S3_ENDPOINT);
-        LOG.info("s3Endpoint: {}", s3Endpoint);
-
         s3Region = StringUtils.getEnv(ENV_S3_REGION);
         LOG.info("s3Region: {}", s3Region);
 
