@@ -1,6 +1,6 @@
 namespace: rest-catalog
 serviceAccount: rest-catalog
-image: cloudcheflabs/rest-catalog:v1.1.0
+image: cloudcheflabs/rest-catalog:1.1.0
 imagePullPolicy: Always
 imagePullSecrets: {}
 replicas: 1

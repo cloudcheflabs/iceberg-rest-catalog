@@ -4,7 +4,7 @@
 set -e -x
 
 export REST_CATALOG_JAR=rest-catalog-1.1.0.jar;
-export DATA_API_IMAGE=cloudcheflabs/rest-catalog:v1.1.0
+export DATA_API_IMAGE=cloudcheflabs/rest-catalog:1.1.0
 
 
 for i in "$@"
