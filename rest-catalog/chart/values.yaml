@@ -1,6 +1,6 @@
 namespace: rest-catalog
 serviceAccount: rest-catalog
-image: cloudcheflabs/rest-catalog:v1.0.0
+image: cloudcheflabs/rest-catalog:1.1.0
 imagePullPolicy: Always
 imagePullSecrets: {}
 replicas: 1
@@ -43,6 +43,7 @@ restCatalog:
     accessKey: "any-s3-access-key"
     secretKey: "any-s3-secret-key"
     endpoint: "any-s3-endpoint"
+    region: "us-east-1"
   jdbc:
     url: "jdbc:mysql://localhost:3306/rest_catalog?useSSL=false&createDatabaseIfNotExist=true"
     user: "any-user"

@@ -60,6 +60,8 @@ spec:
               value: "{{ .Values.restCatalog.s3.secretKey }}"
             - name: S3_ENDPOINT
               value: "{{ .Values.restCatalog.s3.endpoint }}"
+            - name: S3_REGION
+              value: "{{ .Values.restCatalog.s3.region }}"
             - name: JDBC_URL
               value: "{{ .Values.restCatalog.jdbc.url }}"
             - name: JDBC_USER
