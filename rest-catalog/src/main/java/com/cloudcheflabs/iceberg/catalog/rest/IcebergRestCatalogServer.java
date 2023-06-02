@@ -37,6 +37,8 @@ public class IcebergRestCatalogServer implements InitializingBean {
     public static final String ENV_S3_SECRET_KEY = "S3_SECRET_KEY";
     public static final String ENV_S3_ENDPOINT = "S3_ENDPOINT";
 
+    public static final String ENV_S3_REGION = "S3_REGION";
+
     public static final String ENV_JDBC_URL = "JDBC_URL";
     public static final String ENV_JDBC_USER = "JDBC_USER";
     public static final String ENV_JDBC_PASSWORD = "JDBC_PASSWORD";
@@ -44,6 +46,8 @@ public class IcebergRestCatalogServer implements InitializingBean {
     private String s3AccessKey;
     private String s3SecretKey;
     private String s3Endpoint;
+
+    private String s3Region;
 
     private String jdbcUrl;
     private String jdbcUser;
@@ -59,6 +63,12 @@ public class IcebergRestCatalogServer implements InitializingBean {
 
         s3Endpoint = StringUtils.getEnv(ENV_S3_ENDPOINT);
         LOG.info("s3Endpoint: {}", s3Endpoint);
+
+        s3Endpoint = StringUtils.getEnv(ENV_S3_ENDPOINT);
+        LOG.info("s3Endpoint: {}", s3Endpoint);
+
+        s3Region = StringUtils.getEnv(ENV_S3_REGION);
+        LOG.info("s3Region: {}", s3Region);
 
         jdbcUrl = StringUtils.getEnv(ENV_JDBC_URL);
         LOG.info("jdbcUrl: {}", jdbcUrl);
@@ -162,6 +172,11 @@ public class IcebergRestCatalogServer implements InitializingBean {
             if(s3Endpoint != null) {
                 configuration.set("fs.s3a.endpoint", s3Endpoint);
             }
+
+            if(s3Region != null) {
+                configuration.set("fs.s3a.endpoint.region", s3Region);
+            }
+
             configuration.set("fs.s3a.path.style.access", "true");
         }
 

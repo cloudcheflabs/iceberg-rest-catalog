@@ -21,6 +21,7 @@ public class RunSparkWithIcebergRestCatalog {
         String s3AccessKey = System.getProperty("s3AccessKey");
         String s3SecretKey = System.getProperty("s3SecretKey");
         String s3Endpoint = System.getProperty("s3Endpoint");
+        String s3Region = System.getProperty("s3Region");
         String restUrl = System.getProperty("restUrl");
         String warehouse = System.getProperty("warehouse");
         String token = System.getProperty("token");
@@ -53,6 +54,9 @@ public class RunSparkWithIcebergRestCatalog {
 
         Configuration hadoopConfiguration = spark.sparkContext().hadoopConfiguration();
         hadoopConfiguration.set("fs.s3a.endpoint", s3Endpoint);
+        if(s3Region != null) {
+            hadoopConfiguration.set("fs.s3a.endpoint.region", s3Region);
+        }
         hadoopConfiguration.set("fs.s3a.access.key", s3AccessKey);
         hadoopConfiguration.set("fs.s3a.secret.key", s3SecretKey);
         hadoopConfiguration.set("fs.s3a.path.style.access", "true");
