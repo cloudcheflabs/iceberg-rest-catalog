@@ -19,7 +19,7 @@ management:
     port: 38081
 
 server:
-  port: 8080
+  port: 8088
   servlet:
     context-path: /
   shutdown: graceful
